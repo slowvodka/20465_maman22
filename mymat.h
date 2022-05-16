@@ -1,25 +1,22 @@
-
-
-#ifndef INC_20465_MAMAN22_MYMAT_H
-#define INC_20465_MAMAN22_MYMAT_H
-#endif //INC_20465_MAMAN22_MYMAT_H
-
-#include <string.h>
-#include <stdlib.h>
-#include <stdio.h>
-#include "utils.h"
-
 #define MAT_SIZE 4
-#define MAX_COMMAND 100
 
-typedef struct mat {
-    float matrix[MAT_SIZE][MAT_SIZE];
-} mat;
+#define FALSE 0
+#define TRUE 1
 
+typedef struct mat
+{
+    double **position;
+}mat;
 
+typedef struct mat * point_mat;
 
-struct mat mat_add(mat A , mat B, mat C);
-struct mat mat_sub(mat A , mat B, mat C);
-struct mat mat_mul(mat A , mat B, mat C);
-struct mat scalar_mul(mat A, float num, mat C);
-struct mat mat_trans(mat A, mat C);
+point_mat matCreate();
+void matDelete(point_mat);
+
+void read_mat(point_mat, double *, int);
+void print_mat(point_mat);
+void add_mat(point_mat,point_mat,point_mat *);
+void sub_mat(point_mat,point_mat,point_mat *);
+void mul_mat(point_mat,point_mat,point_mat *);
+void mul_scalar(point_mat,double,point_mat *);
+void trans_mat(point_mat,point_mat *);

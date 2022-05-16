@@ -1,0 +1,95 @@
+please enter a command: read_mat MAT_A, 1, 2, 3, 3
+please enter a command: read_mat MAT_B, 1, 2, 3, 3
+please enter a command: read_mat MAT_C, 1, 2, 3, 3
+please enter a command: read_mat MAT_D, 1, 2, 3, 3
+please enter a command: read_mat MAT_E, 1, 2, 3, 3
+please enter a command: read_mat MAT_E, 1, 2, 3, 3, -1, -7
+please enter a command: print_mat MAT_A
+      1.00,      2.00,      3.00,      3.00
+      0.00,      0.00,      0.00,      0.00
+      0.00,      0.00,      0.00,      0.00
+      0.00,      0.00,      0.00,      0.00
+
+please enter a command: print_mat MAT_B
+      1.00,      2.00,      3.00,      3.00
+      0.00,      0.00,      0.00,      0.00
+      0.00,      0.00,      0.00,      0.00
+      0.00,      0.00,      0.00,      0.00
+
+please enter a command: print_mat MAT_C
+      1.00,      2.00,      3.00,      3.00
+      0.00,      0.00,      0.00,      0.00
+      0.00,      0.00,      0.00,      0.00
+      0.00,      0.00,      0.00,      0.00
+
+please enter a command: read_mat MAT_A, 1, 2, 3, 3, 4, 5, 6, 7, 8, 9, 1, 2, 3, 4, 5, 6, 6, 6, 6, 6, 6
+please enter a command: read_mat MAT_B, 1, 2.3456, -7.89
+please enter a command: read_mat MAT_C, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16
+please enter a command: print_mat MAT_A
+      1.00,      2.00,      3.00,      3.00
+      4.00,      5.00,      6.00,      7.00
+      8.00,      9.00,      1.00,      2.00
+      3.00,      4.00,      5.00,      6.00
+
+please enter a command: print_mat MAT_B
+      1.00,      2.35,     -7.89,      0.00
+      0.00,      0.00,      0.00,      0.00
+      0.00,      0.00,      0.00,      0.00
+      0.00,      0.00,      0.00,      0.00
+
+please enter a command: print_mat MAT_C
+      1.00,      2.00,      3.00,      4.00
+      5.00,      6.00,      7.00,      8.00
+      9.00,     10.00,     11.00,     12.00
+     13.00,     14.00,     15.00,     16.00
+
+please enter a command: add_mat MAT_A, MAT_B, MAT_D
+please enter a command: print_mat MAT_D
+      2.00,      4.35,     -4.89,      3.00
+      4.00,      5.00,      6.00,      7.00
+      8.00,      9.00,      1.00,      2.00
+      3.00,      4.00,      5.00,      6.00
+
+please enter a command: sub_mat MAT_B, MAT_A, MAT_E
+please enter a command: print_mat MAT_E
+      0.00,      0.35,    -10.89,     -3.00
+     -4.00,     -5.00,     -6.00,     -7.00
+     -8.00,     -9.00,     -1.00,     -2.00
+     -3.00,     -4.00,     -5.00,     -6.00
+
+please enter a command: mul_mat MAT_B, MAT_C, MAT_F
+please enter a command: print_mat MAT_F
+    -58.28,    -62.83,    -67.37,    -71.92
+      0.00,      0.00,      0.00,      0.00
+      0.00,      0.00,      0.00,      0.00
+      0.00,      0.00,      0.00,      0.00
+
+please enter a command: mul_scalar MAT_A, 12.5, MAT_A
+please enter a command: print_mat MAT_A
+     12.50,     25.00,     37.50,     37.50
+     50.00,     62.50,     75.00,     87.50
+    100.00,    112.50,     12.50,     25.00
+     37.50,     50.00,     62.50,     75.00
+
+please enter a command: trans_mat MAT_C, MAT_C
+please enter a command: print_mat MAT_C
+      1.00,      5.00,      9.00,     13.00
+      2.00,      6.00,     10.00,     14.00
+      3.00,      7.00,     11.00,     15.00
+      4.00,      8.00,     12.00,     16.00
+
+please enter a command: read_mat MAT_B, 0
+please enter a command: print_mat MAT_B
+      0.00,      0.00,      0.00,      0.00
+      0.00,      0.00,      0.00,      0.00
+      0.00,      0.00,      0.00,      0.00
+      0.00,      0.00,      0.00,      0.00
+
+please enter a command: mul_mat MAT_A,MAT_A,MAT_A
+please enter a command: print_mat MAT_A
+   6562.50,   7968.75,   5156.25,   6406.25
+  14531.25,  17968.75,  12968.75,  15781.25
+   9062.50,  12187.50,  13906.25,  15781.25
+  12031.25,  14843.75,  10625.00,  12968.75
+
+please enter a command: stop

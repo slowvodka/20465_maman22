@@ -1,86 +1,278 @@
 #include "mymat.h"
+#include "io_utils.h"
 
-struct mat mat_add(mat A , mat B, mat C)
+#include <stdio.h>
+#include <stdlib.h>
+
+
+static void setInMat(point_mat p,int i, int j,double number)
 {
     /**
-     * function that adds mats
-     * @param A - mat, first mat to add
-     * @param B - mat, second mat to add
-     * @param C - mat, the sum of the two mats
+     * setter
+     * @param p - matrix
+     * @param i - row
+     * @param j - col
+     * @param number - the number to be setted
      */
-    mat new_mat ={};
-    int i,j;
-    for(i=0;i<MAT_SIZE; i++)
-        for (j = 0; j < MAT_SIZE; j++)
-            new_mat.matrix[i][j] = A.matrix[i][j] + B.matrix[i][j];
-
-    C = new_mat;
-    return C;
+    *(*((p->position)+i)+j) = number;
+}
+static double getFromMat(point_mat p,int i, int j)
+{
+    /**
+     * getter
+     * @param p - matrix
+     * @param i - row
+     * @param j - col
+     * @return double - p[i][j]
+     */
+    return *(*((p->position)+i)+j);
 }
 
-struct mat mat_sub(mat A , mat B, mat C)
+
+point_mat matCreate()
 {
     /**
-     * function that substruct mats
-     * @param A - mat, first mat to substract from
-     * @param B - mat, second mat to be substracted
-     * @param C - mat, the difference between the two mats
+     * mat creator and initiator
+     * @return pointer to mat
      */
-    mat new_mat ={};
+    point_mat new_point_mat;
     int i,j;
-    for(i=0;i<MAT_SIZE; i++)
-        for (j = 0; j < MAT_SIZE; j++)
-            new_mat.matrix[i][j] = A.matrix[i][j] - B.matrix[i][j];
-    C = new_mat;
-    return C;
+    new_point_mat = (point_mat)malloc(sizeof(mat));
+    if(new_point_mat)
+    {
+        new_point_mat->position = (double **)malloc(MAT_SIZE*(sizeof(double *)));
+        if(new_point_mat->position)
+        {
+            for(i=0; i<MAT_SIZE; i++)
+            {
+                *((new_point_mat->position)+i) = (double *)malloc(MAT_SIZE*(sizeof(double)));
+                if(!(*((new_point_mat->position)+i)))/*case one of malloc didn't success*/
+                {
+                    for(j = 0;j<=i;j++)
+                    {
+                        free(*((new_point_mat->position)+j));
+                    }
+                    return NULL;
+                }
+            }
+        }else{
+            free(new_point_mat);
+            return NULL;
+        }
+    }else{
+        return NULL;
+    }
+    return new_point_mat;
 }
 
-struct mat mat_mul(mat A , mat B, mat C)
+void matDelete(point_mat p)
 {
     /**
-     * function that multiplies mats
-     * @param A - mat, first mat to mult
-     * @param B - mat, second mat to be mult
-     * @param C - mat, the multiplication of the two mats
+     * delete matrix
+     * @param p - pointer to matrix
      */
-    mat new_mat ={};
-    int i,j;
-    for(i=0;i<MAT_SIZE; i++)
-        for (j = 0; j < MAT_SIZE; j++)
-            new_mat.matrix[i][j] = A.matrix[i][j] * B.matrix[i][j];
-    C = new_mat;
-    return C;
+    int i;
+    for(i=0;i<MAT_SIZE;i+=1)
+    {
+        free(*((p->position)+i));
+    }
+    free(p);
 }
 
-struct mat scalar_mul(mat A, float num, mat C)
+void read_mat(point_mat p, double *arr, int Last)
 {
     /**
-     * function that multiplies a mat with scalar
-     * @param A - mat, mat to mult
-     * @param num - mat, real number
-     * @param C - mat, the multiplication result
-     */
-    mat new_mat ={};
-    int i,j;
-    for(i=0;i<MAT_SIZE; i++)
-        for (j = 0; j < MAT_SIZE; j++)
-            new_mat.matrix[i][j] = A.matrix[i][j] * num;
-    C = new_mat;
-    return C;
+    * function that read mat
+    * @param p - mat pointer
+    * @param arr - double array
+    * @param last - last position to place number
+    */
+    int i,j,k=0;
+    for(i = 0;i <MAT_SIZE; i+=1)
+    {
+        for(j = 0;j<MAT_SIZE; j+=1)
+        {
+            if(Last >= k)
+            {
+                setInMat(p,i,j,arr[k]);
+                k++;
+            }
+            else
+            {
+                setInMat(p,i,j,0);
+            }
+        }
+    }
 }
 
-struct mat mat_trans(mat A, mat C)
+void print_mat(point_mat p)
 {
     /**
-     * function that transposes a mat
-     * @param A - mat, mat to transpose
-     * @param C - mat, the transposed mat
+     * function to print mat
+     * @param p - matrix pointer
      */
-    mat new_mat ={};
     int i,j;
-    for(i=0;i<MAT_SIZE; i++)
-        for (j = 0; j < MAT_SIZE; j++)
-            new_mat.matrix[i][j] = A.matrix[j][i];
-    C = new_mat;
-    return C;
+    printf("\n");
+    for(i=0; i < MAT_SIZE; i++)
+    {
+        for(j=0; j < MAT_SIZE; j++)
+        {
+            printf("%10.2f",getFromMat(p,i,j));
+            printf((j+1 < MAT_SIZE)? "," : "");
+        }
+        printf("\n");
+    }
+}
+
+void add_mat(point_mat p1,point_mat p2,point_mat *p3)
+{
+    /**
+    * function that adds mats
+    * @param p1 - mat, first mat to add
+    * @param p2 - mat, second mat to add
+    * @param p3 - mat, the sum of the two mats
+    */
+    int i,j;
+    double number;
+
+    point_mat new_point_mat = matCreate();
+    if(new_point_mat)
+    {
+        for(i=0; i < MAT_SIZE; i++)
+        {
+            for(j=0; j < MAT_SIZE; j++)
+            {
+                number = getFromMat(p1,i,j) + getFromMat(p2,i,j);
+                setInMat(new_point_mat,i,j,number);
+            }
+        }
+        matDelete(*p3);
+        *p3 = new_point_mat;
+
+    }
+    else
+    {
+        errorHandler(98, "add_mat");
+    }
+}
+
+void sub_mat(point_mat p1,point_mat p2,point_mat *p3)
+{
+    /**
+    * function that substracts mats
+    * @param p1 - mat, first mat
+    * @param p2 - mat, second mat to be substracted
+    * @param p3 - mat, the diff of the two mats
+    */
+    int i,j;
+    double number;
+    point_mat new_point_mat = matCreate();
+    if(new_point_mat)
+    {
+        for(i=0; i < MAT_SIZE; i++)
+        {
+            for(j=0; j < MAT_SIZE; j++)
+            {
+                number = getFromMat(p1,i,j) - getFromMat(p2,i,j);
+                setInMat(new_point_mat,i,j,number);
+            }
+        }
+        matDelete(*p3);
+        *p3 = new_point_mat;
+    }
+    else
+    {
+        errorHandler(98, "sub_mat");
+    }
+}
+void mul_mat(point_mat p1,point_mat p2,point_mat *p3)
+{
+    /**
+    * function that substracts mats
+    * @param p1 - mat, first mat
+    * @param p2 - mat, second mat
+    * @param p3 - mat, the mult of the two mats
+    */
+    int i,j,k;
+    double number;
+    point_mat new_point_mat = matCreate();
+    if(new_point_mat)
+    {
+        for(i=0; i < MAT_SIZE; i++)
+        {
+            for(j=0; j < MAT_SIZE; j++)
+            {
+                number = 0;
+                for(k=0; k < MAT_SIZE; k++)
+                {
+                    number += getFromMat(p1,i,k) * getFromMat(p2,k,j);
+                }
+                setInMat(new_point_mat,i,j,number);
+            }
+        }
+        matDelete(*p3);
+        *p3 = new_point_mat;
+    }
+    else
+    {
+        errorHandler(98, "mul_mat");
+    }
+}
+
+void mul_scalar(point_mat p1,double num,point_mat *p2)
+{
+    /**
+    * function that substracts mats
+    * @param p1 - mat, first mat
+    * @param num - real number
+    * @param p2 - mat, the mult of the mat and num
+    */
+    int i,j;
+    double number;
+    point_mat new_point_mat = matCreate();
+    if(new_point_mat)
+    {
+        for(i=0; i < MAT_SIZE; i++)
+        {
+            for(j=0; j < MAT_SIZE; j++)
+            {
+                number = getFromMat(p1,i,j) * num;
+                setInMat(new_point_mat,i,j,number);
+            }
+        }
+        matDelete(*p2);
+        *p2 = new_point_mat;
+    }
+    else
+    {
+        errorHandler(98, "mul_scalar");
+    }
+}
+void trans_mat(point_mat p1,point_mat *p2)
+{
+    /**
+     * transpose mat
+     * @param p1 - mat to be transposed
+     * @param p2 - transposed mat
+     */
+    int i,j;
+    double number;
+    point_mat new_point_mat = matCreate();
+    if(new_point_mat)
+    {
+        for(i=0; i < MAT_SIZE; i++)
+        {
+            for(j=0; j < MAT_SIZE; j++)
+            {
+                number = getFromMat(p1,i,j);
+                setInMat(new_point_mat,j,i,number);
+            }
+        }
+        matDelete(*p2);
+        *p2 = new_point_mat;
+    }
+    else
+    {
+        errorHandler(98, "trans_mat");
+    }
 }

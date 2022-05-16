@@ -3,4 +3,4 @@ project(20465_maman22 C)
 
 set(CMAKE_C_STANDARD 90)
 
-add_executable(20465_maman22 mainmat.c mymat.c mymat.h utils.c utils.h)
+add_executable(20465_maman22 io_utils.c io_utils.h mymat.c mymat.h mainmat.c)
